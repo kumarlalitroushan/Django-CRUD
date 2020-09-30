@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<form method="get" action="/search" class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query"
+        id="query">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<h3>search Results</h3>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Publisher</th>
+        <th scope="col">Stock</th>
+      </tr>
+    </thead>
+    {%for items in allPosts%}
+    <tbody>
+      <tr>
+        <th scope="row">{{items.sno}}</th>
+        <td>{{items.title}}</td>
+        <td>{{items.author}}</td>
+        <td>{{items.publisher}}</td>
+        <td>{{items.stock}}</td>
+      </tr>
+    </tbody>
+    {%endfor%}
+  </table>
+
+<a href="/" class="btn btn-success">Home</a>
+{% endblock body %}

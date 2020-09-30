@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Publisher</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    {%for items in pi%}
+    <tbody>
+      <tr>
+        <th scope="row">{{items.sno}}</th>
+        <td>{{items.title}}</td>
+        <td>{{items.author}}</td>
+        <td>{{items.publisher}}</td>
+        <td>{{items.stock}}</td>
+        <td><a href="{% url 'updatedata' items.sno%}" class="btn-warning btn-sm" id="update">Edit</a>
+            <form action="{% url 'deletedata' items.sno%}" method="post">{% csrf_token %}<input type="submit" class="btn btn-danger" value="delete"></form></td>
+      </tr>
+    </tbody>
+    {%endfor%}
+  </table>
+ 
+
+{% endblock body %}
+    
+
+

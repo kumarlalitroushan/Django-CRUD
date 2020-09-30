@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block head %}
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .list-group {
+        margin-left: 35%;
+        margin-top: 40px;
+    }
+
+    .close {
+        position: absolute;
+        top: 0;
+        right: 14px;
+        font-size: 42px;
+        transform: rotate(45deg);
+        cursor: pointer;
+        color: white;
+    }
+
+    .container {
+        display: flex;
+        margin: 15px;
+        margin-left: 798px;
+    }
+
+    .bg-modal {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        opacity: 0.7;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: none;
+    }
+
+    .modal-content {
+        width: 500px;
+        height: 300px;
+        background-color: black;
+        position: relative;
+        align-items: center;
+    }
+
+    .form-group {
+        display: flex;
+        margin-top: 18px;
+    }
+    #add{
+        margin: 10px;
+    }
+    .dropdown{
+        margin: 10px;
+    }
+    .search{
+        margin: 10px;
+    }
+</style>
+
+{% endblock %}
+{% block title %}
+HOME
+{% endblock title %}
+{% block body %}
+
+<div class="container">
+    <button id="add" class="btn btn-primary">Add items</button>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/highstock">Order by min Stock</a>
+            <a class="dropdown-item" href="/lowstock">Order by Max stock</a>
+            <a class="dropdown-item" href="/publisher">Order by Publisher</a>
+        </div>
+    </div>
+
+    <form method="get" action="/search" class="form-inline my-2 my-lg-0" class="search">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query"
+            id="query">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    {%for items in allbooks%}
+    <tbody>
+        <tr>
+            <th scope="row">{{items.sno}}</th>
+            <td>{{items.title}}</td>
+            <td>{{items.author}}</td>
+            <td>{{items.publisher}}</td>
+            <td>{{items.stock}}</td>
+            <td><a href="{% url 'updatedata' items.sno%}" class="btn-warning btn-sm" id="update">Edit</a>
+                <form action="{% url 'deletedata' items.sno%}" method="post">{% csrf_token %}<input type="submit"
+                        class="btn btn-danger" value="delete"></form>
+            </td>
+        </tr>
+    </tbody>
+    {%endfor%}
+</table>
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <form action="additems" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" placeholder="Title" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Author" class="form-control" id="author" name="author">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Publisher" class="form-control" id="publisher" name="publisher">
+            </div>
+            <div class="form-group">
+                <input type="number" placeholder="Stock" class="form-control" id="stock" name="stock">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Item</button>
+        </form>
+        <div class="close">+</div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.getElementById('add').addEventListener('click', function () {
+        document.querySelector('.bg-modal').style.display = 'flex';
+    });
+    document.querySelector('.close').addEventListener('click', function () {
+        document.querySelector('.bg-modal').style.display = 'none';
+    });
+</script>
+{% endblock body %}
